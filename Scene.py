@@ -6,6 +6,8 @@ from Player import Player
 from Asteroid import Asteroid
 from Control import Label, Button
 
+import utils
+
 class Scene(Object):
   def __init__(self):
     self.objs = []
@@ -29,17 +31,26 @@ class Scene(Object):
 class MenuScene(Scene):
   def __init__(self):
     super().__init__()
+    self.scores = [
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 1*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 0*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - -1*35), 150, 35, 'FGC - 1000', 'black', 'white')
+    ]
     self.objs += [
       Label(Vector2(1280/2 - 4*35/2, 720/2 - 6*35), 150, 35, 'ASTEROIDS', 'gray', 'white'),
       Button(Vector2(1280/2 - 2*35/2, 720/2 - 5*35), 75, 35, 'Jugar', 'green', 'white', lambda ctx: ctx.setChangeScene(GameScene())),
 
       Label(Vector2(1280/2 - 4*35/2, 720/2 - 2*35), 150, 35, 'Puntajes', 'black', 'white'),
-      Label(Vector2(1280/2 - 4*35/2, 720/2 - 1*35), 150, 35, 'FGC - 1000', 'black', 'white'),
-      Label(Vector2(1280/2 - 4*35/2, 720/2 - 0*35), 150, 35, 'FGC - 1000', 'black', 'white'),
-      Label(Vector2(1280/2 - 4*35/2, 720/2 - -1*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+      *self.scores,
 
       Button(Vector2(1280/2 - 35/2, 720/2 + 3*35), 75, 35, 'Salir', 'black', 'gray', lambda ctx: ctx.quit()),
     ]
+
+  def tick(self, ctx):
+    self.scores[0].text = utils.fmtScore(ctx.maxScores[0])
+    self.scores[1].text = utils.fmtScore(ctx.maxScores[1])
+    self.scores[2].text = utils.fmtScore(ctx.maxScores[2])
+    super().tick(ctx)
 
 class GameScene(Scene):
   def __init__(self):
@@ -78,4 +89,5 @@ class GameScene(Scene):
 
   def _checkColission(self, ctx):
     if any((a.intersects(self.player) for a in self.asteroids)):
+      ctx.saveScore(int(self.player.score))
       ctx.setChangeScene(MenuScene())

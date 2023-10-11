@@ -9,10 +9,30 @@ class Context:
     self.paused = False
     self._newScene = None
 
+    self.playerName = 'FGC'
+    self.maxScores = [('FGC', 60 * 60), ('FGC', 60), ('FGC', 6)]
+
   def play(self):
     self._start()
     self._gameLoop()
     self._quit()
+
+  def setPlayerName(self, name):
+    self.playerName = name
+
+  def saveScore(self, newScore):
+    foo = (self.playerName, newScore)
+    a, b, c = self.maxScores
+    if a[1] < newScore:
+      c = b
+      b = a
+      a = foo
+    elif b[1] < newScore:
+      c = b
+      b = foo
+    elif c[1] < newScore:
+      c = foo
+    self.maxScores = [a, b, c]
 
   def setChangeScene(self, newScene):
     self._newScene = newScene

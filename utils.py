@@ -6,3 +6,6 @@ def asShPoint(point):
 
 def asShPolygon(polygon, *, translate = True):
   return SHPolygon([asShPoint(point + (polygon.pos if translate else 0)) for point in polygon.points])
+
+def fmtScore(score):
+  return f'{score[0]} - {int(score[1])}'
