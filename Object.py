@@ -2,12 +2,14 @@ import pygame
 from pygame import Vector2
 import numpy as np
 
+from utils import asShPoint, asShPolygon
+
 class Object:
   def __init__(self, pos):
     self.pos = pos
 
   def tick(self, ctx):
-    self.draw(ctx)
+    pass
 
   def draw(self, ctx):
     pass
@@ -27,6 +29,21 @@ class Polygon(Object):
     self.rotation += rad
     for point in self.points:
       point.rotate_ip_rad(rad)
+
+  def containsPoint(self, point, *, translate = True):
+    return asShPolygon(self, translate = translate).contains(asShPoint(point))
+
+  def intersects(self, other, *, translate = True):
+    return asShPolygon(self, translate = translate).intersects(asShPolygon(other, translate = translate))
+
+class NPolygon(Polygon):
+  def __init__(self, pos, color, radius, sides):
+    self.sides = sides
+    self.radius = radius
+
+    dr = 2 * np.pi / sides
+    points = [Vector2(np.sin(dr * i), np.cos(dr * i)) * radius for i in range(sides)]
+    super().__init__(pos, color, points)
 
 class Rectangle(Polygon):
   def __init__(self, pos, color, base, height, *, fromPos):

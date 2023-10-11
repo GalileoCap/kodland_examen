@@ -3,6 +3,7 @@ from pygame import Vector2
 
 from Object import Object
 from Player import Player
+from Asteroid import Asteroid
 
 class Scene(Object):
   def __init__(self):
@@ -26,10 +27,39 @@ class Scene(Object):
 
 class MainScene(Scene):
   def __init__(self):
-    self.objs = [
-      Player(Vector2(1280/2, 720/2)), # TODO: Get screen size at creation
-    ]
+    self.player = Player(Vector2(1280/2, 720/2)) # TODO: Get screen size at creation
+    self.asteroids = []
+    self.asteroidTimer = 1
+    self.currAsteroidTimer = 0
+    super().__init__()
+
+  def tick(self, ctx):
+    super().tick(ctx)
+    self._spawnAsteroids(ctx)
+    self._tickAll(ctx)
+    self._checkColission(ctx)
 
   def draw(self, ctx):
     ctx.screen.fill('purple') # Fondo negro
+    self._drawAll(ctx)
     super().draw(ctx)
+
+  def _tickAll(self, ctx):
+    self.player.tick(ctx)
+    for a in self.asteroids:
+      a.tick(ctx)
+
+  def _drawAll(self, ctx):
+    self.player.draw(ctx)
+    for a in self.asteroids:
+      a.draw(ctx)
+
+  def _spawnAsteroids(self, ctx):
+    self.currAsteroidTimer += ctx.dt
+    if self.currAsteroidTimer >= self.asteroidTimer:
+      self.asteroids.append(Asteroid())
+      self.currAsteroidTimer = 0
+
+  def _checkColission(self, ctx):
+    if any((a.intersects(self.player) for a in self.asteroids)):
+      print('COLLIDE')

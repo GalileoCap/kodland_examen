@@ -24,9 +24,10 @@ class Context:
     self.running = True
     while self.running:
       self._pollEvents()
+      self.scene.tick(self)
 
       self.screen.fill('black') # Limpio la pantalla
-      self.scene.tick(self)
+      self.scene.draw(self)
       pygame.display.flip() # Dibujo lo nuevo
 
       self.dt = self.clock.tick(60) / 1000 # Avanzo un tick, limitando el frame rate a 60fps
