@@ -59,6 +59,10 @@ class Context:
       elif event.type == pygame.MOUSEBUTTONDOWN:
         self.wasMouseJustPressed = True
         self.isMousePressed = True
+      elif event.type == pygame.KEYDOWN:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+          self.setPaused(not self.paused)
 
   def _changeScene(self):
     if self._newScene is not None:
