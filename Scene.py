@@ -62,4 +62,4 @@ class MainScene(Scene):
 
   def _checkColission(self, ctx):
     if any((a.intersects(self.player) for a in self.asteroids)):
-      print('COLLIDE')
+      ctx.setPaused(True)

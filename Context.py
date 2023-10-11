@@ -5,11 +5,15 @@ class Context:
   def __init__(self, startingScene, resolution):
     self.resolution = resolution
     self.scene = startingScene
+    self.paused = False
 
   def play(self):
     self._start()
     self._gameLoop()
     self._quit()
+
+  def setPaused(self, pause):
+    self.paused = pause
 
   def _start(self):
     pygame.init()
@@ -24,7 +28,8 @@ class Context:
     self.running = True
     while self.running:
       self._pollEvents()
-      self.scene.tick(self)
+      if not self.paused:
+        self.scene.tick(self)
 
       self.screen.fill('black') # Limpio la pantalla
       self.scene.draw(self)
