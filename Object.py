@@ -27,18 +27,45 @@ class Polygon(Object):
       point.rotate_ip_rad(rad)
 
 class Rectangle(Polygon):
-  def __init__(self, pos, color, base, height):
-    points = [Vector2(-base/2, -height/2), Vector2(base/2, -height/2), Vector2(base/2, height/2), Vector2(-base/2, height/2)]
+  def __init__(self, pos, color, base, height, *, fromPos):
+    self.base = base
+    self.height = height
+
+    points = [Vector2(0, 0), Vector2(base, 0), Vector2(base, height), Vector2(0, height)]
+    if not fromPos:
+      centroid = (points[0] + points[1] + points[2] + points[3]) / 3
+      points = [point - centroid for point in points]
+
     super().__init__(pos, color, points)
 
 class Square(Rectangle):
-  def __init__(self, pos, color, side):
-    super().__init__(pos, color, side, side)
+  def __init__(self, pos, color, side, *, fromPos):
+    self.side = side
+    super().__init__(pos, color, side, side, fromPos = fromPos)
 
-class Player(Square):
+class Triangle(Polygon):
+  def __init__(self, pos, color, base, height, *, fromPos):
+    points = [Vector2(0, 0), Vector2(base, 0), Vector2(base/2, height)]
+    if not fromPos:
+      centroid = (points[0] + points[1] + points[2]) / 3
+      points = [point - centroid for point in points]
+    super().__init__(pos, color, points)
+
+class EquilateralTriangle(Triangle):
+  def __init__(self, pos, color, side, *, fromPos):
+    height = np.sqrt(side**2 - (side/2)**2)
+    super().__init__(pos, color, side, height, fromPos = fromPos)
+
+class Player(Object):
   def __init__(self, pos):
-    super().__init__(pos, 'white', 25)
+    super().__init__(pos)
+    # self.shape = Square(pos, 'white', 25, fromPos = False)
+
+    self.shape = EquilateralTriangle(pos, 'white', 25, fromPos = False)
 
   def tick(self, ctx):
-    self.rotate(2*np.pi/2 * ctx.dt)
+    self.shape.rotate(2*np.pi/2 * ctx.dt)
     super().tick(ctx)
+
+  def draw(self, ctx):
+    self.shape.draw(ctx)
