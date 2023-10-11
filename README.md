@@ -15,3 +15,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 python main.py
 ```
+
+## Controles
+
+Se mueve adelante y atrás con W y S. Y con A y D se rota la nave.  
+Presionando ESCAPE se puede pausar el juego.  
+Se consiguen puntos esquivando a los asteroides por la mayor cantidad de tiempo posible.
