@@ -10,7 +10,7 @@ class Context:
     self._newScene = None
 
     self.playerName = 'FGC'
-    self.maxScores = [('FGC', 60 * 60), ('FGC', 60), ('FGC', 6)]
+    self.maxScores = [('FGC', 60 * 60), ('FGC', 60), ('FGC', 1)]
 
   def play(self):
     self._start()
