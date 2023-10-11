@@ -20,6 +20,9 @@ class Context:
   def setPaused(self, pause):
     self.paused = pause
 
+  def quit(self):
+    self.running = False
+
   def _start(self):
     self.screen = pygame.display.set_mode(self.resolution)
     self.clock = pygame.time.Clock()
@@ -49,7 +52,7 @@ class Context:
     self.events = pygame.event.get()
     for event in self.events:
       if event.type == pygame.QUIT:
-        self.running = False
+        self.quit()
       elif event.type == pygame.MOUSEBUTTONUP:
         self.wasMouseJustReleased = True
         self.isMousePressed = False

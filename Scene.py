@@ -4,7 +4,7 @@ from pygame import Vector2
 from Object import Object
 from Player import Player
 from Asteroid import Asteroid
-from Button import Button
+from Control import Label, Button
 
 class Scene(Object):
   def __init__(self):
@@ -29,7 +29,17 @@ class Scene(Object):
 class MenuScene(Scene):
   def __init__(self):
     super().__init__()
-    self.objs += [Button(Vector2(0, 0), 200, 50, 'Jugar', 'green', 'white', lambda ctx: ctx.setChangeScene(GameScene()))]
+    self.objs += [
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 6*35), 150, 35, 'ASTEROIDS', 'gray', 'white'),
+      Button(Vector2(1280/2 - 2*35/2, 720/2 - 5*35), 75, 35, 'Jugar', 'green', 'white', lambda ctx: ctx.setChangeScene(GameScene())),
+
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 2*35), 150, 35, 'Puntajes', 'black', 'white'),
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 1*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - 0*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+      Label(Vector2(1280/2 - 4*35/2, 720/2 - -1*35), 150, 35, 'FGC - 1000', 'black', 'white'),
+
+      Button(Vector2(1280/2 - 35/2, 720/2 + 3*35), 75, 35, 'Salir', 'black', 'gray', lambda ctx: ctx.quit()),
+    ]
 
 class GameScene(Scene):
   def __init__(self):
