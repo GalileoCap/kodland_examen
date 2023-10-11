@@ -7,11 +7,15 @@ class Context:
     self.font = font
     self.scene = startingScene
     self.paused = False
+    self._newScene = None
 
   def play(self):
     self._start()
     self._gameLoop()
     self._quit()
+
+  def setChangeScene(self, newScene):
+    self._newScene = newScene
 
   def setPaused(self, pause):
     self.paused = pause
@@ -27,6 +31,7 @@ class Context:
     self.dt = 0
     self.running = True
     while self.running:
+      self._changeScene()
       self._pollEvents()
       if not self.paused:
         self.scene.tick(self)
@@ -51,3 +56,8 @@ class Context:
       elif event.type == pygame.MOUSEBUTTONDOWN:
         self.wasMouseJustPressed = True
         self.isMousePressed = True
+
+  def _changeScene(self):
+    if self._newScene is not None:
+      self.scene = self._newScene
+      self._newScene = None

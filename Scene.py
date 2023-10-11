@@ -29,7 +29,7 @@ class Scene(Object):
 class MenuScene(Scene):
   def __init__(self):
     super().__init__()
-    self.objs += [Button(Vector2(0, 0), 200, 50, 'Jugar', 'green', 'white', lambda ctx: print('Jugar'))]
+    self.objs += [Button(Vector2(0, 0), 200, 50, 'Jugar', 'green', 'white', lambda ctx: ctx.setChangeScene(GameScene()))]
 
 class GameScene(Scene):
   def __init__(self):
@@ -68,4 +68,4 @@ class GameScene(Scene):
 
   def _checkColission(self, ctx):
     if any((a.intersects(self.player) for a in self.asteroids)):
-      ctx.setPaused(True)
+      ctx.setChangeScene(MenuScene())
