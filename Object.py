@@ -17,12 +17,14 @@ class Polygon(Object):
     super().__init__(pos)
     self.color = color
     self.points = points
+    self.rotation = 0
 
   def draw(self, ctx):
     points = [point + self.pos for point in self.points]
     pygame.draw.polygon(ctx.screen, self.color, points)
 
   def rotate(self, rad):
+    self.rotation += rad
     for point in self.points:
       point.rotate_ip_rad(rad)
 
@@ -55,17 +57,3 @@ class EquilateralTriangle(Triangle):
   def __init__(self, pos, color, side, *, fromPos):
     height = np.sqrt(side**2 - (side/2)**2)
     super().__init__(pos, color, side, height, fromPos = fromPos)
-
-class Player(Object):
-  def __init__(self, pos):
-    super().__init__(pos)
-    # self.shape = Square(pos, 'white', 25, fromPos = False)
-
-    self.shape = EquilateralTriangle(pos, 'white', 25, fromPos = False)
-
-  def tick(self, ctx):
-    self.shape.rotate(2*np.pi/2 * ctx.dt)
-    super().tick(ctx)
-
-  def draw(self, ctx):
-    self.shape.draw(ctx)

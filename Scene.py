@@ -1,7 +1,8 @@
 import pygame
 from pygame import Vector2
 
-from Object import Object, Player
+from Object import Object
+from Player import Player
 
 class Scene(Object):
   def __init__(self):
