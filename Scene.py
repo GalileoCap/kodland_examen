@@ -4,6 +4,7 @@ from pygame import Vector2
 from Object import Object
 from Player import Player
 from Asteroid import Asteroid
+from Button import Button
 
 class Scene(Object):
   def __init__(self):
@@ -25,7 +26,12 @@ class Scene(Object):
     for obj in self.objs:
       obj.draw(ctx)
 
-class MainScene(Scene):
+class MenuScene(Scene):
+  def __init__(self):
+    super().__init__()
+    self.objs += [Button(Vector2(0, 0), 200, 50, 'Jugar', 'green', 'white', lambda ctx: print('Jugar'))]
+
+class GameScene(Scene):
   def __init__(self):
     self.player = Player(Vector2(1280/2, 720/2)) # TODO: Get screen size at creation
     self.asteroids = []

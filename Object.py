@@ -36,6 +36,9 @@ class Polygon(Object):
   def intersects(self, other, *, translate = True):
     return asShPolygon(self, translate = translate).intersects(asShPolygon(other, translate = translate))
 
+  def wasJustClicked(self, ctx):
+    return ctx.wasMouseJustPressed and self.containsPoint(Vector2(pygame.mouse.get_pos()))
+
 class NPolygon(Polygon):
   def __init__(self, pos, color, radius, sides):
     self.sides = sides
